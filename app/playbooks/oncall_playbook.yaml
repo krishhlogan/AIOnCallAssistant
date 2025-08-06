@@ -1,0 +1,25 @@
+double_deduction:
+  - type: shell
+    description: Simulate checking transaction logs
+    command: "echo 'Checking double deduction logs for mobile: {{ mobile_number }}'"
+
+  - type: shell
+    description: Simulate notifying Finance API
+    command: "echo 'Finance notified for double deduction: Policy {{ policy_number }}, Mobile {{ mobile_number }}, Ticket {{ main_ticket_number }}'"
+
+  - type: shell
+    description: Simulate tagging audit log
+    command: "echo 'Audit tagged for double deduction issue: Ticket {{ main_ticket_number }}'"
+
+sync_issue:
+  - type: shell
+    description: Simulate restarting sync service
+    command: "echo 'Restarting sync service for Policy {{ policy_number }} due to sync issue'"
+
+  - type: shell
+    description: Simulate checking service status
+    command: "echo 'Service status checked for sync issue reported by customer: Mobile {{ mobile_number }}'"
+
+  - type: shell
+    description: Simulate writing to sync log
+    command: "echo 'Logged sync restart action in system logs: Ticket {{ main_ticket_number }}'"

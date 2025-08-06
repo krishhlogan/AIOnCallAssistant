@@ -1,0 +1,8 @@
+issue: double_deduction
+steps:
+  - name: Check transaction logs
+    action: run_shell
+    command: echo "Checking logs for {{subject}}"
+  - name: Refund coins
+    action: run_shell
+    command: echo "Refunding coins for issue"
