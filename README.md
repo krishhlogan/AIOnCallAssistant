@@ -19,18 +19,17 @@ An intelligent, production-ready assistant to triage customer emails using LLMs 
 ### 1. Clone the Repo
 
 ```bash
-git clone https://github.com/your-org/ai-oncall-assistant.git
-cd ai-oncall-assistant
+git clone https://github.com/krishhlogan/AIOnCallAssistant.git
+cd AIOnCallAssistant
 ```
 
 ### 2. Configure Environment Variables
 
-Create a `.env` file at the root level:
+Create a `.env` file inside app folder:
 
 ```env
 GEMINI_API_KEY=your_gemini_api_key_here
 OPENAI_API_KEY=your_openai_api_key_here
-LLM_PROVIDER=gemini
 ```
 
 Make sure `.env` is in `.gitignore` (already handled).
@@ -105,12 +104,28 @@ curl -X POST "http://localhost:8000/submit-email?llm_provider=gemini" \
 
 ```
 .
-├── api/                   # FastAPI app
-├── worker/                # Celery background processor
-├── playbooks/             # YAML files defining fix logic
-├── .env                   # Local environment config
-├── docker-compose.yml     # Dev orchestration
-└── README.md
+├── LICENSE
+├── README.md
+├── app
+│   ├── Dockerfile
+│   ├── main.py
+│   ├── modules
+│   │   ├── action_executor.py
+│   │   ├── email_parser.py
+│   │   ├── llm_gemini.py
+│   │   ├── llm_infer.py
+│   │   ├── llm_openai.py
+│   │   ├── notifier.py
+│   │   └── playbook_runner.py
+│   ├── playbooks
+│   │   ├── double_deduction.yaml
+│   │   └── oncall_playbook.yaml
+│   ├── requirements.txt
+│   └── worker.py
+├── docker-compose.yml
+├── playbooks
+└── scripts
+    └── fetch_emails.py
 ```
 
 ---
