@@ -30,6 +30,7 @@ Create a `.env` file inside app folder:
 ```env
 GEMINI_API_KEY=your_gemini_api_key_here
 OPENAI_API_KEY=your_openai_api_key_here
+slack_notifier=your_slack_webhook_url
 ```
 
 Make sure `.env` is in `.gitignore` (already handled).
