@@ -1,3 +1,4 @@
+import requests
 import yaml
 import subprocess
 import os
@@ -22,6 +23,36 @@ def execute_shell(command: str) -> str:
         return result.stdout.decode().strip()
     except subprocess.CalledProcessError as e:
         return f"[ERROR] {e.stderr.decode().strip()}"
+
+def execute_http_step(step: dict, context: dict) -> str:
+    """Executes an HTTP step from the playbook."""
+    method = step.get("method", "GET").upper()
+    context['api_key'] = 'MW1nX3VzZXI6czIrOztZIzVEKVdRaWF2IV44RVlsQWp+JE9QeUwybX4='
+    url = render_template(step.get("url", ""), context)
+    print("Url is ",url)
+    headers = step.get("headers", {})
+    body = step.get("body", "")
+
+    # Render headers and body
+    rendered_headers = {
+        key: render_template(value, context)
+        for key, value in headers.items()
+    }
+    print("Headers are",headers)
+    rendered_body = render_template(body, context)
+    print("Body is ",rendered_body)
+
+    try:
+        if method == "GET":
+            response = requests.get(url, headers=rendered_headers)
+        elif method == "POST":
+            response = requests.post(url, headers=rendered_headers, data=rendered_body)
+        else:
+            return f"[ERROR] Unsupported HTTP method: {method}"
+
+        return f"Status: {response.status_code}, Response: {response.text[:500]}"
+    except Exception as e:
+        return f"[HTTP ERROR] {str(e)}"
 
 
 def render_template(template_string: str, context: dict) -> str:
@@ -55,7 +86,8 @@ def execute_playbook(issue_type: str, **context) -> str:
             output = execute_shell(command)
             results.append(f"✅ Output: {output}")
         elif action_type == "http":
-            results.append(f"🔗 HTTP call simulated: {command}")
+            result = execute_http_step(step,context)
+            results.append(f"🔗 HTTP call made and result is: {result}")
         else:
             results.append(f"⚠️ Unknown action type: {action_type}")
 

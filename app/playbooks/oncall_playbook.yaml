@@ -11,6 +11,20 @@ double_deduction:
     description: Simulate tagging audit log
     command: "echo 'Audit tagged for double deduction issue: Ticket {{ main_ticket_number }}'"
 
+  - type: http
+    description: Call Refund API
+    method: POST
+    url: "https://uathealthvas.tataaig.com/points/transaction/refund"
+    headers:
+      Authorization: "Basic {{ api_key }}"
+      Content-Type: "application/json"
+    body: |
+      {
+        "member_id": "{{ member_id }}",
+        "points": "{{ points }}",
+        "reason": "refund"
+      }
+
 sync_issue:
   - type: shell
     description: Simulate restarting sync service

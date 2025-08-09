@@ -28,6 +28,7 @@ You are an on-call AI assistant. From the email subject and body, infer:
    - Customer Name
    - SF Ticket Main (12-digit number in subject)
    - SF Ticket Secondary (from 'Ticket No: XYZ')
+   - Member Id
 
 Respond ONLY in this JSON format:
 {{
@@ -36,7 +37,9 @@ Respond ONLY in this JSON format:
   "mobile_number": "<string or null>",
   "customer_name": "<string or null>",
   "sf_ticket_main": "<string or null>",
-  "sf_ticket_secondary": "<string or null>"
+  "sf_ticket_secondary": "<string or null>",
+  "member_id": "<string or null>",
+  "points" : "<number or null>"
 }}
 
 Subject: {subject}

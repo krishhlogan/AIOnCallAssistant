@@ -27,6 +27,8 @@ def process_email(subject, sender, body, llm_provider="openai"):
         print(f"[Inference] Mobile Number: {inferred_data['mobile_number']}")
         print(f"[Inference] Main Ticket #: {inferred_data['sf_ticket_main']}")
         print(f"[Inference] Side Ticket #: {inferred_data['sf_ticket_secondary']}")
+        print(f"[Inference] Member id #: {inferred_data['member_id']}")
+        print(f"[Inference] Points to refund #: {inferred_data['points']}")
 
         # STEP 2: Execute actions based on YAML playbook
         context = {
@@ -38,8 +40,17 @@ def process_email(subject, sender, body, llm_provider="openai"):
             "mobile_number": inferred_data['mobile_number'],
             "main_ticket_number": inferred_data['sf_ticket_main'],
             "side_ticket_number": inferred_data['sf_ticket_secondary'],
+            "member_id": inferred_data['member_id'],
+            "points": inferred_data['points']
         }
 
+        if issue_type == 'unknown':
+            notify(f"⚠️Unhandled Email 📧\n from: {sender}\nsubject: {subject}\nbody: {body}")
+            return {
+                "status": "success",
+                "issue_type": issue_type,
+                "result": "Cannot find issue type"
+            }
         result = execute_playbook(issue_type, **context)
         print('[Execution] Result:', result)
 
